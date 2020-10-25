@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Linux 文件权限 | YoaiL</title><meta name="keywords" content="Linux,学习笔记,菜鸟入门"><meta name="author" content="YoaiL"><meta name="copyright" content="YoaiL"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="课程思维导图不擅长排版码子，所以了思维导图。![](https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;liaoyio&#x2F;imgHosting&#x2F;img-lyphotos5.2 Linux文件权限.png) Linux &#x2F;etc&#x2F;passwd文件的构成文件的内容： 每个Linux都会有root账号，以此来说明，从内容上看，每行都使用【:】分隔（注意：每行前面的数字是行号，不是内容），所以一共有七部">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 文件权限">
+<meta property="og:url" content="http://example.com/2019/11/15/Linux/linux-%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90/index.html">
+<meta property="og:site_name" content="YoaiL">
+<meta property="og:description" content="课程思维导图不擅长排版码子，所以了思维导图。![](https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;gh&#x2F;liaoyio&#x2F;imgHosting&#x2F;img-lyphotos5.2 Linux文件权限.png) Linux &#x2F;etc&#x2F;passwd文件的构成文件的内容： 每个Linux都会有root账号，以此来说明，从内容上看，每行都使用【:】分隔（注意：每行前面的数字是行号，不是内容），所以一共有七部">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotos677.jpg">
+<meta property="article:published_time" content="2019-11-15T09:32:00.000Z">
+<meta property="article:modified_time" content="2020-03-14T11:47:14.059Z">
+<meta property="article:author" content="YoaiL">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="菜鸟入门">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotos677.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2019/11/15/Linux/linux-%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":1,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isanchor: true
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-03-14 19:47:14'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><style type="text/css">#toggle-sidebar {left:100px}</style><style type="text/css">#toggle-sidebar {bottom: 35px}</style><meta name="generator" content="Hexo 5.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">16</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">9</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%BE%E7%A8%8B%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE"><span class="toc-number">1.</span> <span class="toc-text">课程思维导图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux-etc-passwd%E6%96%87%E4%BB%B6%E7%9A%84%E6%9E%84%E6%88%90"><span class="toc-number">2.</span> <span class="toc-text">Linux &#x2F;etc&#x2F;passwd文件的构成</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#etc-shadow-%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">&#x2F;etc&#x2F;shadow 文件结构</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotos677.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">YoaiL</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">Linux 文件权限</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-11-15T09:32:00.000Z" title="发表于 2019-11-15 17:32:00">2019-11-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-03-14T11:47:14.059Z" title="更新于 2020-03-14 19:47:14">2020-03-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/linux/">linux</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="课程思维导图"><a href="#课程思维导图" class="headerlink" title="课程思维导图"></a>课程思维导图</h1><p>不擅长排版码子，所以了思维导图。<br>![](<a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotos5.2">https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotos5.2</a> Linux文件权限.png)</p>
+<h1 id="Linux-etc-passwd文件的构成"><a href="#Linux-etc-passwd文件的构成" class="headerlink" title="Linux /etc/passwd文件的构成"></a>Linux <code>/etc/passwd</code>文件的构成</h1><p>文件的内容：<br><img src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotosB1.png"></p>
+<p>每个Linux都会有root账号，以此来说明，从内容上看，每行都使用【:】分隔（<code>注意：每行前面的数字是行号，不是内容</code>），所以一共有七部分内容，分别是：</p>
+<ol>
+<li><p>账号名称：root，用来对应UID<br><img src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotosB2.png"></p>
+</li>
+<li><p>口令：x<br><img src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotosB3.png"></p>
+</li>
+</ol>
+<p> (早期Unix系统的口令放在这个字段。但因为这个文件对所有用户都是可读取的（ls -l /etc/passwd 即可看出来），这样容易造成口令被窃的风险，因此之后这个口令放到/etc/shadow文件中了。该位置就保留了一个【x】，没啥含义.)</p>
+<ol start="3">
+<li>使用者标识符：UID<br><img src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotosB4.png"></li>
+</ol>
+<p> Linux对UID的限制如下所示——<br> <img src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotosB5.png"></p>
+<p> 所以，UID为0的时候，就是root</p>
+<ol start="4">
+<li>用户组：GID<br><img src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotosB7.png"></li>
+</ol>
+<p> 这个与/etc/group有关。</p>
+<ol start="5">
+<li>用户信息说明栏：root<br><img src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotosB8.png"></li>
+</ol>
+<p> 用来解释账号的意义。</p>
+<ol start="6">
+<li>家目录：/root<br><img src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotosB9.png"></li>
+</ol>
+<p> root的家目录就是 /root喽！可以观察普通用户的家目录就是你登陆后默认进入的目录。</p>
+<ol start="7">
+<li>shell<br><img src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotosB10.png"></li>
+</ol>
+<p>用户登陆系统后会取得一个shell来与系统核心沟通以进行用户的操作任务。因为在这个地方配置的就是bash，所以默认使用的就是这个bash了。</p>
+<h1 id="etc-shadow-文件结构"><a href="#etc-shadow-文件结构" class="headerlink" title="/etc/shadow 文件结构"></a><code>/etc/shadow</code> 文件结构</h1><p><img src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotosB12.png" alt="进入 /etc/shadow "></p>
+<p>/etc/shadow中同样也是以“：”作为分隔符，共有9个字段。</p>
+<p>1.  账号名称</p>
+<p>2.  密码</p>
+<p>这个字段内的数据才是真正的密码，是经过编码的密码。</p>
+<p>3.  最近更动密码的日期</p>
+<p>(这个字段记录了改动密码的日期，这个日期是以1970年1月1日作为1而累加的日期，而1971年1月1日则是366.)</p>
+<p>4.  密码不可被更改的天数</p>
+<p>(记录了这个账号的密码在最近一次被更改后需要经过几天才可以被更改.)</p>
+<p>5.  密码需要重新更改的天数</p>
+<p>6.  密码需要更改期限前的警告天数</p>
+<p>7.  密码过期后的账号宽限时间</p>
+<p>(如果密码过期了，当你登陆系统的时候，系统会强制要求你必须要重新设置密码才能登陆继续使用.)</p>
+<ol start="8">
+<li>账号失效日期</li>
+</ol>
+<p>(这个账号在此字段规定的日期之后，将无法再使用。经常用于收费服务中.)</p>
+<ol start="9">
+<li>保留.</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotosB13.png"></p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">YoaiL</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2019/11/15/Linux/linux-%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90/">http://example.com/2019/11/15/Linux/linux-%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">YoaiL</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="post-meta__tags" href="/tags/%E8%8F%9C%E9%B8%9F%E5%85%A5%E9%97%A8/">菜鸟入门</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotos677.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechatpay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechatpay.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2019/11/26/Flog/2020/"><img class="prev-cover" src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-ly20200101.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">“ 如果生活是夹心汤圆，那我这碗是一团糟糕。 ”</div></div></a></div><div class="next-post pull-right"><a href="/2019/11/12/Linux/Linux-%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lylinux.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Iinux 网络配置</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2019/12/27/Linux/Linux-sed/" title="Linux 三剑客 "><img class="cover" src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lyphotosnn3.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-12-27</div><div class="title">Linux 三剑客 </div></div></a></div><div><a href="/2019/11/12/Linux/Linux-网络配置/" title="Iinux 网络配置"><img class="cover" src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lylinux.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-11-12</div><div class="title">Iinux 网络配置</div></div></a></div><div><a href="/2019/12/11/Linux/shell/" title="Shell学习笔记"><img class="cover" src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lybash.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-12-11</div><div class="title">Shell学习笔记</div></div></a></div><div><a href="/2020/03/22/MySQL/MySQL创建和管理数据库/" title="MySQL创建和管理数据库"><img class="cover" src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lymonvpng.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-22</div><div class="title">MySQL创建和管理数据库</div></div></a></div><div><a href="/2020/04/06/MySQL/MySQL数据完整性约束/" title="MySQL数据完整性约束"><img class="cover" src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lysel.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-06</div><div class="title">MySQL数据完整性约束</div></div></a></div><div><a href="/2020/04/09/MySQL/MySQL数据更新/" title="MySQL数据更新和单表查询"><img class="cover" src="https://cdn.jsdelivr.net/gh/liaoyio/imgHosting/img-lysee.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-09</div><div class="title">MySQL数据更新和单表查询</div></div></a></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2020 By YoaiL</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">恰逢其会，措不及防；花开两朵，天各一方。</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div class="aplayer no-destroy" data-id="600615076" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="true" muted></div><div class="aplayer no-destroy" data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="true" muted></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script></div></body></html>
